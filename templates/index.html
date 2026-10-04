@@ -2,435 +2,922 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberShield 360</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberShield 360 | Security Center</title>
 
-    <style>
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #0b1220;
-            color: white;
-        }
-
-        header {
-            padding: 22px 8%;
-            border-bottom: 1px solid #26334b;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        main {
-            max-width: 1000px;
-            margin: 45px auto;
-            padding: 0 20px;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        h1 {
-            font-size: 42px;
-            color: #67e8d3;
-        }
-
-        .hero p, .card p { color: #b5c1d5; line-height: 1.6; }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 22px;
-        }
-
-        .card {
-            background: #151f32;
-            border: 1px solid #2c3b54;
-            padding: 25px;
-            border-radius: 14px;
-        }
-
-        .icon { font-size: 32px; }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            background: #0b1220;
-            border: 1px solid #465570;
-            color: white;
-            border-radius: 7px;
-        }
-
-        button {
-            background: #67e8d3;
-            color: #07131b;
-            border: none;
-            padding: 12px 20px;
-            margin-top: 8px;
-            border-radius: 7px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .result { overflow-wrap: anywhere; line-height: 1.6; }
-        .about { margin-top: 22px; }
-
-        @media (max-width: 650px) {
-            .cards { grid-template-columns: 1fr; }
-            h1 { font-size: 32px; }
-        }
-        
-.dashboard-stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin: 18px 0;
+<style>
+:root {
+  --bg: #080d19;
+  --panel: #101827;
+  --panel2: #151f31;
+  --border: #26344a;
+  --text: #f1f5ff;
+  --muted: #9aa9c0;
+  --cyan: #5eead4;
+  --blue: #60a5fa;
+  --purple: #a78bfa;
 }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, Segoe UI, Arial, sans-serif;
+}
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
 
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 245px;
+  padding: 28px 18px;
+  background: #0b1220;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0 8px 38px;
+}
+.brand-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #0e7490, #4f46e5);
+  font-size: 22px;
+}
+.nav-label {
+  color: #71819b;
+  font-size: 11px;
+  letter-spacing: 1.6px;
+  margin: 24px 10px 12px;
+}
+.nav-link {
+  display: block;
+  padding: 12px;
+  margin: 5px 0;
+  color: var(--muted);
+  border-radius: 9px;
+  font-size: 14px;
+  transition: .2s;
+}
+.nav-link:hover, .nav-link.active {
+  background: #18283a;
+  color: var(--cyan);
+}
+.sidebar-note {
+  margin-top: 40px;
+  padding: 15px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.sidebar-note strong { color: var(--cyan); }
+
+.main { min-width: 0; flex: 1; }
+.topbar {
+  min-height: 76px;
+  padding: 18px 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(11,18,32,.8);
+}
+.topbar small { color: var(--muted); }
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #205448;
+  background: #0e2927;
+  color: var(--cyan);
+  border-radius: 30px;
+  font-size: 12px;
+}
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+}
+.content {
+  max-width: 1450px;
+  margin: auto;
+  padding: 32px;
+}
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 34px;
+  border: 1px solid #293c59;
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 90% 0%, #28356b88, transparent 42%),
+    linear-gradient(120deg, #111c30, #101827);
+  margin-bottom: 26px;
+}
+.eyebrow {
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.hero h1 {
+  font-size: clamp(28px, 4vw, 43px);
+  letter-spacing: -1.2px;
+  margin: 13px 0;
+  max-width: 700px;
+}
+.hero h1 span {
+  color: var(--cyan);
+}
+.hero p {
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 650px;
+  margin-bottom: 0;
+}
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 30px 0 16px;
+}
+.section-head h2 { font-size: 19px; margin: 0; }
+.section-head p { color: var(--muted); font-size: 12px; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.stat, .card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+}
 .stat {
-    background: #0b1220;
-    border: 1px solid #2c3b54;
-    border-radius: 10px;
-    padding: 16px;
+  padding: 20px;
+  min-width: 0;
 }
-
-.stat span {
-    color: #b5c1d5;
-    font-size: 13px;
+.stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
-
+.stat-label { color: var(--muted); font-size: 13px; }
+.stat-icon {
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  border-radius: 11px;
+  background: #1c2b42;
+  font-size: 19px;
+}
 .stat h3 {
-    color: #67e8d3;
-    font-size: 28px;
-    margin: 10px 0 0;
+  margin: 17px 0 5px;
+  font-size: 32px;
+  color: var(--text);
 }
+.stat small { color: var(--muted); font-size: 12px; }
 
-#recent-scans li {
-    margin-bottom: 10px;
-    overflow-wrap: anywhere;
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
-    </style>
+.card {
+  padding: 24px;
+  min-width: 0;
+  scroll-margin-top: 20px;
+  transition: border-color .2s, transform .2s;
+}
+.card:hover { border-color: #405878; }
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.tool-icon {
+  display: grid;
+  place-items: center;
+  width: 48px; height: 48px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  font-size: 23px;
+  background: #1b2c45;
+}
+.cyan { color: var(--cyan); }
+.blue { color: var(--blue); }
+.purple { color: var(--purple); }
+.card h2 { font-size: 18px; margin: 0 0 5px; }
+.card-head p, .card > p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+}
+label {
+  display: block;
+  color: #cbd5e1;
+  font-size: 13px;
+  margin: 18px 0 8px;
+}
+input:not([type="checkbox"]), textarea {
+  display: block;
+  width: 100%;
+  padding: 13px 14px;
+  color: var(--text);
+  background: #090f1c;
+  border: 1px solid #34435b;
+  border-radius: 9px;
+  outline: none;
+  transition: border .2s, box-shadow .2s;
+}
+textarea { resize: vertical; min-height: 115px; }
+input:focus, textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px #5eead415;
+}
+button.primary {
+  width: 100%;
+  border: 0;
+  border-radius: 9px;
+  padding: 13px 16px;
+  margin-top: 13px;
+  color: #06131c;
+  font-weight: 800;
+  background: linear-gradient(100deg, var(--cyan), #7dd3fc);
+  transition: filter .2s, transform .2s;
+}
+button.primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+button:disabled { opacity: .65; cursor: wait; }
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0;
+  color: #cbd5e1;
+  font-size: 13px;
+}
+.check-row input { accent-color: var(--cyan); width: 16px; height: 16px; }
+.check-row label { display: inline; margin: 0; cursor: pointer; }
+
+.result {
+  margin-top: 16px;
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.result h3 { color: var(--cyan); font-size: 16px; }
+.result li { margin: 5px 0; }
+
+.scan-list { list-style: none; padding: 0; margin: 15px 0; }
+.scan-list li {
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 9px;
+  background: #0b1321;
+  border: 1px solid var(--border);
+  color: #d5deed;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.secondary {
+  background: #1a273b;
+  border: 1px solid #34435b;
+  color: var(--text);
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+.secondary:hover { border-color: var(--cyan); }
+.about { margin-top: 20px; }
+.footer {
+  padding: 24px 0 5px;
+  text-align: center;
+  color: #71819b;
+  font-size: 12px;
+}
+[hidden] { display: none !important; }
+
+@media (max-width: 950px) {
+  .sidebar { width: 205px; }
+  .content { padding: 22px; }
+  .topbar { padding: 16px 22px; }
+}
+@media (max-width: 700px) {
+  .sidebar { display: none; }
+  .content { padding: 16px; }
+  .topbar { padding: 15px 17px; }
+  .hero { padding: 25px 20px; }
+  .stats { grid-template-columns: 1fr; }
+  .tools-grid { grid-template-columns: 1fr; }
+  .section-head { align-items: flex-start; }
+}
+</style>
 </head>
 
 <body>
-    <header>🛡️ CyberShield 360</header>
-
-    <main>
-        <section class="hero">
-            <h1>Your Digital Safety Assistant</h1>
-            <p>Detect suspicious links and protect your digital life.</p>
-            <p>Scan → Analyze → Understand the risk.</p>
-        </section>
-
-        <section class="cards">
-            <div class="card">
-                <div class="icon">🔗</div>
-                <h2>URL Scanner</h2>
-                <p>Check a website link for suspicious patterns.</p>
-
-                <form id="url-form">
-                    <label for="url">Website URL</label>
-                    <input id="url" type="text"
-                           placeholder="example.com" required>
-                    <button type="submit">Scan URL</button>
-                </form>
-
-                <div id="url-result" class="result" aria-live="polite"></div>
-            </div>
-
-           
-<div class="card">
-    <div class="icon">📩</div>
-    <h2>Scam Message Detector</h2>
-    <p>Check suspicious SMS, WhatsApp and email messages.</p>
-
-    <form id="message-form">
-        <label for="message">Paste your message</label>
-        <textarea id="message" rows="5"
-            placeholder="Paste a suspicious message here..."
-            required></textarea>
-        <button type="submit">Scan Message</button>
-    </form>
-
-    <div id="message-result" class="result" aria-live="polite"></div>
-</div>
-
-            
-<div class="card">
-    <div class="icon">🔐</div>
-    <h2>Login Security Analyzer</h2>
-    <p>Test login activity for suspicious signals.</p>
-
-    <form id="login-form">
-        <label for="failed-attempts">Failed login attempts</label>
-        <input
-            id="failed-attempts"
-            type="number"
-            min="0"
-            max="100"
-            value="0"
-            required
-        >
-
-        <p>
-            <label>
-                <input id="new-device" type="checkbox">
-                Login from an unknown device
-            </label>
-        </p>
-
-        <p>
-            <label>
-                <input id="unusual-location" type="checkbox">
-                Login from an unusual location
-            </label>
-        </p>
-
-        <button type="submit">Analyze Login</button>
-    </form>
-
-    <div id="login-result" class="result" aria-live="polite"></div>
-</div>
-
-           
-<div class="card">
-    <div class="icon">📊</div>
-    <h2>Cyber Risk Dashboard</h2>
-    <p>Summary of your scans in this browser session.</p>
-
-    <div class="dashboard-stats">
-        <div class="stat">
-            <span>Total scans</span>
-            <h3 id="total-scans">0</h3>
-        </div>
-
-        <div class="stat">
-            <span>High-risk results</span>
-            <h3 id="high-scans">0</h3>
-        </div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">🛡️</div>
+      <div>CyberShield <span class="cyan">360</span></div>
     </div>
 
-    <h3>Recent scan results</h3>
-    <ul id="recent-scans">
-        <li>No scans yet. Try one of the scanners above.</li>
-    </ul>
+    <div class="nav-label">WORKSPACE</div>
+    <a class="nav-link active" href="#overview">◈ &nbsp; Overview</a>
+    <a class="nav-link" href="#url-scanner">⌁ &nbsp; URL Scanner</a>
+    <a class="nav-link" href="#message-scanner">✉ &nbsp; Scam Detector</a>
+    <a class="nav-link" href="#login-analyzer">♙ &nbsp; Login Security</a>
+    <a class="nav-link" href="#risk-dashboard">▥ &nbsp; Risk Dashboard</a>
 
-    <button type="button" id="reset-dashboard">
-        Reset dashboard
-    </button>
+    <div class="nav-label">INFORMATION</div>
+    <a class="nav-link" href="#about">ⓘ &nbsp; About Project</a>
+
+    <div class="sidebar-note">
+      <strong>SECURITY TIP</strong>
+      <p>Never share passwords, OTPs or banking details through an unverified link.</p>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div>
+        <strong>Security Center</strong><br>
+        <small>Your digital safety workspace</small>
+      </div>
+      <div class="status"><span class="dot"></span> Protection tools available</div>
+    </header>
+
+    <main class="content">
+      <section class="hero" id="overview">
+        <div class="eyebrow">DIGITAL SAFETY PLATFORM</div>
+        <h1>Stay one step ahead of <span>cyber threats.</span></h1>
+        <p>Analyze suspicious links, detect scam messages and review unusual login activity from one security workspace.</p>
+      </section>
+
+      <div class="section-head">
+        <h2>Security overview</h2>
+        <p>Current browser session</p>
+      </div>
+
+      <section class="stats">
+        <div class="stat">
+          <div class="stat-top">
+            <span class="stat-label">Total scans</span>
+            <span class="stat-icon">⌕</span>
+          </div>
+          <h3 id="total-scans">0</h3>
+          <small>Scans completed this session</small>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <span class="stat-label">High-risk results</span>
+            <span class="stat-icon">⚠️</span>
+          </div>
+          <h3 id="high-scans">0</h3>
+          <small>Results marked High by the rules</small>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <span class="stat-label">Security tools</span>
+            <span class="stat-icon">◈</span>
+          </div>
+          <h3>03</h3>
+          <small>URL, message and login analysis</small>
+        </div>
+      </section>
+
+      <div class="section-head">
+        <h2>Security tools</h2>
+        <p>Choose a tool to begin analysis</p>
+      </div>
+
+      <section class="tools-grid">
+        <article class="card" id="url-scanner">
+          <div class="card-head">
+            <div class="tool-icon cyan">⌁</div>
+            <div>
+              <h2>URL Scanner</h2>
+              <p>Check a link for suspicious patterns.</p>
+            </div>
+          </div>
+          <form id="url-form">
+            <label for="url">Website URL</label>
+            <input id="url" type="text" placeholder="https://example.com" required>
+            <button class="primary" type="submit">Analyze URL →</button>
+          </form>
+          <div id="url-result" class="result" aria-live="polite"></div>
+        </article>
+
+        <article class="card" id="message-scanner">
+          <div class="card-head">
+            <div class="tool-icon purple">✉</div>
+            <div>
+              <h2>Scam Message Detector</h2>
+              <p>Review suspicious SMS, WhatsApp or email text.</p>
+            </div>
+          </div>
+          <form id="message-form">
+            <label for="message">Message to analyze</label>
+            <textarea id="message" rows="4" placeholder="Paste a suspicious message here..." required></textarea>
+            <button class="primary" type="submit">Analyze Message →</button>
+          </form>
+          <div id="message-result" class="result" aria-live="polite"></div>
+        </article>
+
+        <article class="card" id="login-analyzer">
+          <div class="card-head">
+            <div class="tool-icon blue">♙</div>
+            <div>
+              <h2>Login Security Analyzer</h2>
+              <p>Review signals that may indicate unusual login activity.</p>
+            </div>
+          </div>
+          <form id="login-form">
+            <label for="failed-attempts">Failed login attempts</label>
+            <input id="failed-attempts" type="number" min="0" max="100" value="0" required>
+
+            <div class="check-row">
+              <input id="new-device" type="checkbox">
+              <label for="new-device">Login from an unknown device</label>
+            </div>
+            <div class="check-row">
+              <input id="unusual-location" type="checkbox">
+              <label for="unusual-location">Login from an unusual location</label>
+            </div>
+            <button class="primary" type="submit">Analyze Login →</button>
+          </form>
+          <div id="login-result" class="result" aria-live="polite"></div>
+        </article>
+
+        <article class="card" id="risk-dashboard">
+          <div class="card-head">
+            <div class="tool-icon cyan">▥</div>
+            <div>
+              <h2>Risk activity</h2>
+              <p>Your five most recent scan results.</p>
+            </div>
+          </div>
+          <ul id="recent-scans" class="scan-list">
+            <li>No scans yet. Try one of the security tools.</li>
+          </ul>
+          <button type="button" class="secondary" id="reset-dashboard">Reset session dashboard</button>
+        </article>
+      </section>
+
+      <section class="card about" id="about">
+        <div class="card-head">
+          <div class="tool-icon purple">ⓘ</div>
+          <div>
+            <h2>About CyberShield 360</h2>
+            <p>Digital safety and cybersecurity hackathon prototype.</p>
+          </div>
+        </div>
+        <p>Scanner results are preliminary rule-based assessments, not a guarantee that a link or message is safe. Do not enter passwords or OTPs into suspicious websites.</p>
+      </section>
+
+      <footer class="footer">
+        CyberShield 360 · Digital Safety & Cybersecurity
+      </footer>
+    </main>
+  </div>
 </div>
 
-        <section class="card about">
-            <h2>About CyberShield 360</h2>
-            <p>This is a hackathon prototype. Scanner results are preliminary
-               rule-based checks, not a guarantee that a link is safe.</p>
-        </section>
-    </main>
-
-    <script>
-        
+<script>
 let totalScans = 0;
 let highScans = 0;
 
 function addDashboardResult(moduleName, data) {
-    totalScans++;
+  totalScans++;
+  if (data.risk_level === "High") highScans++;
 
-    if (data.risk_level === "High") {
-        highScans++;
-    }
+  document.getElementById("total-scans").textContent = totalScans;
+  document.getElementById("high-scans").textContent = highScans;
 
-    document.getElementById("total-scans").textContent = totalScans;
-    document.getElementById("high-scans").textContent = highScans;
+  const list = document.getElementById("recent-scans");
+  if (totalScans === 1) list.replaceChildren();
 
-    const list = document.getElementById("recent-scans");
+  const item = document.createElement("li");
+  item.textContent =
+    `${moduleName}: ${data.risk_level} Risk (${data.risk_score}/100)`;
+  list.prepend(item);
 
-    if (totalScans === 1) {
-        list.replaceChildren();
-    }
-
-    const item = document.createElement("li");
-    item.textContent =
-        `${moduleName}: ${data.risk_level} Risk (${data.risk_score}/100)`;
-
-    list.prepend(item);
-
-    // Keep only the five most recent results.
-    while (list.children.length > 5) {
-        list.lastElementChild.remove();
-    }
+  while (list.children.length > 5) list.lastElementChild.remove();
 }
 
-document.getElementById("reset-dashboard").addEventListener("click", function() {
-    totalScans = 0;
-    highScans = 0;
+function showResult(container, data, extraText) {
+  container.replaceChildren();
 
-    document.getElementById("total-scans").textContent = "0";
-    document.getElementById("high-scans").textContent = "0";
+  const heading = document.createElement("h3");
+  heading.textContent = `${data.risk_level} Risk — ${data.risk_score}/100`;
+  container.appendChild(heading);
 
-    const list = document.getElementById("recent-scans");
-    list.replaceChildren();
-
+  const list = document.createElement("ul");
+  (data.reasons || []).forEach(reason => {
     const item = document.createElement("li");
-    item.textContent = "No scans yet. Try one of the scanners above.";
+    item.textContent = reason;
     list.appendChild(item);
+  });
+  container.appendChild(list);
+
+  const noteText = extraText || data.recommendation || data.note;
+  if (noteText) {
+    const note = document.createElement("p");
+    note.textContent = noteText;
+    container.appendChild(note);
+  }
+}
+
+async function postJSON(url, payload) {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || "Request failed");
+  }
+  return data;
+}
+
+function setLoading(form, loading, label) {
+  const button = form.querySelector('button[type="submit"]');
+  if (!button.dataset.originalText) {
+    button.dataset.originalText = button.textContent;
+  }
+  button.disabled = loading;
+  button.textContent = loading ? "Analyzing..." : button.dataset.originalText;
+}
+
+document.getElementById("reset-dashboard").addEventListener("click", () => {
+  totalScans = 0;
+  highScans = 0;
+  document.getElementById("total-scans").textContent = "0";
+  document.getElementById("high-scans").textContent = "0";
+
+  const list = document.getElementById("recent-scans");
+  list.replaceChildren();
+  const item = document.createElement("li");
+  item.textContent = "No scans yet. Try one of the security tools.";
+  list.appendChild(item);
 });
-        document.getElementById("url-form").addEventListener("submit", async function(event) {
-            event.preventDefault();
 
-            const result = document.getElementById("url-result");
-            const url = document.getElementById("url").value.trim();
+document.getElementById("url-form").addEventListener("submit", async event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const result = document.getElementById("url-result");
+  const url = document.getElementById("url").value.trim();
 
-            result.textContent = "Analyzing URL...";
+  result.textContent = "Analyzing URL...";
+  setLoading(form, true);
 
-            try {
-                const response = await fetch("/api/scan-url", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ url: url })
-                });
+  try {
+    const data = await postJSON("/api/scan-url", { url });
+    addDashboardResult("URL Scanner", data);
+    showResult(result, data);
+  } catch (error) {
+    result.textContent = "Scan failed: " + error.message;
+  } finally {
+    setLoading(form, false);
+  }
+});
 
-                const data = await response.json();
-                addDashboardResult("URL Scanner", data);
+document.getElementById("message-form").addEventListener("submit", async event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const result = document.getElementById("message-result");
+  const message = document.getElementById("message").value.trim();
 
-                if (!response.ok) {
-                    throw new Error("Scan failed");
-                }
+  result.textContent = "Analyzing message...";
+  setLoading(form, true);
 
-                result.replaceChildren();
+  try {
+    const data = await postJSON("/api/scan-message", { message });
+    addDashboardResult("Message Scanner", data);
+    showResult(result, data);
+  } catch (error) {
+    result.textContent = "Scan failed: " + error.message;
+  } finally {
+    setLoading(form, false);
+  }
+});
 
-                const heading = document.createElement("h3");
-                heading.textContent =
-                    `${data.risk_level} Risk — ${data.risk_score}/100`;
-                result.appendChild(heading);
+document.getElementById("login-form").addEventListener("submit", async event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const result = document.getElementById("login-result");
 
-                const list = document.createElement("ul");
+  const payload = {
+    failed_attempts: Number(document.getElementById("failed-attempts").value),
+    new_device: document.getElementById("new-device").checked,
+    unusual_location: document.getElementById("unusual-location").checked
+  };
 
-                data.reasons.forEach(function(reason) {
-                    const item = document.createElement("li");
-                    item.textContent = reason;
-                    list.appendChild(item);
-                });
+  result.textContent = "Analyzing login activity...";
+  setLoading(form, true);
 
-                result.appendChild(list);
+  try {
+    const data = await postJSON("/api/analyze-login", payload);
+    addDashboardResult("Login Security", data);
+    showResult(result, data, data.recommendation || data.note);
+  } catch (error) {
+    result.textContent = "Analysis failed: " + error.message;
+  } finally {
+    setLoading(form, false);
+  }
+});
 
-                if (data.note) {
-                    const note = document.createElement("p");
-                    note.textContent = data.note;
-                    result.appendChild(note);
-                }
-            } catch (error) {
-                result.textContent =
-                    "Scan failed. Check that the Flask server is running.";
-            }
-        });
-        
-document.getElementById("message-form").addEventListener("submit", async function(event) {
-    event.preventDefault();
+document.querySelectorAll(".nav-link").forEach(link => {
+  link.addEventListener("click", () => {
+    document.querySelectorAll(".nav-link").forEach(item => item.classList.remove("active"));
+    link.classList.add("active");
+  });
+});
+</script>
 
-    const result = document.getElementById("message-result");
-    const message = document.getElementById("message").value.trim();
+<!-- CyberShield360 Floating Cybersecurity Assistant -->
+<style>
+  #cyber-chat-button {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    border: 0;
+    border-radius: 50px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #06b6d4, #6366f1);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 28px #0005;
+  }
 
-    result.textContent = "Analyzing message...";
+  #cyber-chat-window {
+    position: fixed;
+    right: 24px;
+    bottom: 88px;
+    z-index: 9999;
+    width: min(360px, calc(100vw - 32px));
+    height: 480px;
+    max-height: calc(100vh - 120px);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #334155;
+    border-radius: 18px;
+    background: #0f172a;
+    color: #e2e8f0;
+    box-shadow: 0 16px 50px #0008;
+    font-family: Arial, sans-serif;
+  }
 
-    try {
-        const response = await fetch("/api/scan-message", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({message: message})
-        });
+  #cyber-chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 16px;
+    background: #172554;
+    border-bottom: 1px solid #334155;
+  }
 
-        const data = await response.json();
-        addDashboardResult("Message Scanner", data);
-        result.replaceChildren();
+  #cyber-chat-header strong {
+    display: block;
+    font-size: 15px;
+  }
 
-        const heading = document.createElement("h3");
-        heading.textContent = `${data.risk_level} Risk — ${data.risk_score}/100`;
-        result.appendChild(heading);
+  #cyber-chat-header small {
+    display: block;
+    margin-top: 4px;
+    color: #a5f3fc;
+  }
 
-        const list = document.createElement("ul");
+  #cyber-chat-close {
+    border: 0;
+    background: transparent;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+  }
 
-        data.reasons.forEach(function(reason) {
-            const item = document.createElement("li");
-            item.textContent = reason;
-            list.appendChild(item);
-        });
+  #cyber-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-        result.appendChild(list);
+  .cyber-chat-message {
+    max-width: 88%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
 
-        const note = document.createElement("p");
-        note.textContent = data.note || "";
-        result.appendChild(note);
+  .cyber-chat-bot {
+    align-self: flex-start;
+    background: #1e293b;
+  }
 
-    } catch (error) {
-        result.textContent = "Scan failed. Please check the server.";
+  .cyber-chat-user {
+    align-self: flex-end;
+    background: #164e63;
+  }
+
+  #cyber-chat-form {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid #334155;
+  }
+
+  #cyber-chat-input {
+    min-width: 0;
+    flex: 1;
+    padding: 11px;
+    border: 1px solid #475569;
+    border-radius: 10px;
+    background: #111827;
+    color: white;
+    font-size: 13px;
+  }
+
+  #cyber-chat-form button {
+    border: 0;
+    border-radius: 10px;
+    padding: 0 14px;
+    background: #0891b2;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  #cyber-chat-note {
+    padding: 0 12px 10px;
+    color: #94a3b8;
+    font-size: 10px;
+  }
+
+  @media (max-width: 480px) {
+    #cyber-chat-button {
+      right: 14px;
+      bottom: 14px;
     }
-});
 
-document.getElementById("login-form").addEventListener("submit", async function(event) {
-    event.preventDefault();
-
-    const result = document.getElementById("login-result");
-
-    const payload = {
-        failed_attempts: Number(
-            document.getElementById("failed-attempts").value
-        ),
-        new_device: document.getElementById("new-device").checked,
-        unusual_location: document.getElementById("unusual-location").checked
-    };
-
-    result.textContent = "Analyzing login activity...";
-
-    try {
-        const response = await fetch("/api/analyze-login", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(payload)
-        });
-
-        const data = await response.json();
-        addDashboardResult("Login Security", data);
-
-        if (!response.ok) {
-            throw new Error("Analysis failed");
-        }
-
-        result.replaceChildren();
-
-        const heading = document.createElement("h3");
-        heading.textContent =
-            `${data.risk_level} Risk — ${data.risk_score}/100`;
-        result.appendChild(heading);
-
-        const list = document.createElement("ul");
-
-        data.reasons.forEach(function(reason) {
-            const item = document.createElement("li");
-            item.textContent = reason;
-            list.appendChild(item);
-        });
-
-        result.appendChild(list);
-
-        const recommendation = document.createElement("p");
-        recommendation.textContent =
-            "Recommendation: " + data.recommendation;
-        result.appendChild(recommendation);
-
-        const note = document.createElement("p");
-        note.textContent = data.note;
-        result.appendChild(note);
-
-    } catch (error) {
-        result.textContent =
-            "Analysis failed. Check the Flask server and try again.";
+    #cyber-chat-window {
+      right: 8px;
+      bottom: 76px;
+      width: calc(100vw - 16px);
     }
-});
-    </script>
+  }
+</style>
+
+<div id="cyber-chat-window" role="dialog"
+     aria-label="Cybersecurity Assistant" aria-hidden="true">
+  <div id="cyber-chat-header">
+    <div>
+      <strong>🛡️ CyberShield Assistant</strong>
+      <small>Cybersecurity guidance</small>
+    </div>
+    <button id="cyber-chat-close" type="button"
+            aria-label="Close chat">×</button>
+  </div>
+
+  <div id="cyber-chat-messages" aria-live="polite">
+    <div class="cyber-chat-message cyber-chat-bot">Hi! I'm your CyberShield Assistant. Ask me about phishing, OTP safety, passwords, or suspicious links.</div>
+  </div>
+
+  <form id="cyber-chat-form">
+    <input id="cyber-chat-input" type="text"
+           placeholder="Ask a cybersecurity question..."
+           maxlength="500" autocomplete="off" required>
+    <button type="submit">Send</button>
+  </form>
+  <div id="cyber-chat-note">Demo assistant · Verify important advice independently.</div>
+</div>
+
+<button id="cyber-chat-button" type="button"
+        aria-controls="cyber-chat-window" aria-expanded="false">
+  💬 Cyber Assistant
+</button>
+
+<script>
+(function () {
+  const chatButton = document.getElementById("cyber-chat-button");
+  const chatWindow = document.getElementById("cyber-chat-window");
+  const closeButton = document.getElementById("cyber-chat-close");
+  const chatForm = document.getElementById("cyber-chat-form");
+  const chatInput = document.getElementById("cyber-chat-input");
+  const messages = document.getElementById("cyber-chat-messages");
+
+  if (!chatButton || !chatWindow || !closeButton ||
+      !chatForm || !chatInput || !messages) return;
+
+  function toggleChat(open) {
+    chatWindow.style.display = open ? "flex" : "none";
+    chatWindow.setAttribute("aria-hidden", String(!open));
+    chatButton.setAttribute("aria-expanded", String(open));
+
+    if (open) chatInput.focus();
+  }
+
+  function addMessage(text, sender) {
+    const bubble = document.createElement("div");
+    bubble.className = "cyber-chat-message " +
+      (sender === "user" ? "cyber-chat-user" : "cyber-chat-bot");
+    bubble.textContent = text;
+    messages.appendChild(bubble);
+    messages.scrollTop = messages.scrollHeight;
+    return bubble;
+  }
+
+  function getReply(question) {
+    const q = question.toLowerCase();
+
+    if (/\b(otp|one time password|verification code)\b/.test(q)) {
+      return "Never share your OTP or verification code with anyone, including callers claiming to be from a bank. If you already shared it, contact your bank through its official app or number immediately and secure your account.";
+    }
+
+    if (/\b(phishing|scam email|fake email|suspicious email)\b/.test(q)) {
+      return "Watch for urgent threats, unexpected attachments, requests for passwords or OTPs, and mismatched sender addresses. Don't click suspicious links. Verify the message using the organisation's official website or phone number.";
+    }
+
+    if (/\b(password|passphrase|strong password)\b/.test(q)) {
+      return "Use a long, unique password or passphrase for each account. A password manager can help. Enable multi-factor authentication where available, and never share your password.";
+    }
+
+    if (/\b(link|url|website|website safe|suspicious site)\b/.test(q)) {
+      return "Check the exact domain carefully, watch for misspellings and unexpected redirects, and avoid entering credentials after following an unsolicited link. HTTPS alone does not prove a website is trustworthy. Our URL scanner is experimental, so verify important links independently.";
+    }
+
+    if (/\b(hack|hacked|account stolen|account compromised)\b/.test(q)) {
+      return "From a trusted device, change the affected account password, sign out other sessions, enable MFA, and check recovery details. If a bank or payment account is involved, contact the provider immediately. In India, you can report cybercrime at cybercrime.gov.in; for financial cyber fraud, call 1930 promptly.";
+    }
+
+    if (/\b(public wifi|public wi-fi|wi-fi|wifi)\b/.test(q)) {
+      return "Avoid sensitive transactions on untrusted public Wi-Fi. Use HTTPS, turn off automatic connections and file sharing, and use your mobile data for sensitive activity when possible.";
+    }
+
+    if (/\b(virus|malware|ransomware)\b/.test(q)) {
+      return "Keep your operating system and apps updated, use reputable security software, and avoid unknown attachments or downloads. If you suspect ransomware, disconnect the affected device from networks and seek trusted technical help.";
+    }
+
+    if (/\b(privacy|personal data|data protection)\b/.test(q)) {
+      return "Share only the personal information an app genuinely needs. Review app permissions, use multi-factor authentication, keep software updated, and be careful about posting sensitive details publicly.";
+    }
+
+    return "I can help with phishing, OTP safety, passwords, suspicious links, hacked accounts, public Wi-Fi, malware, and privacy. Please ask a specific question. This demo uses predefined guidance rather than a live AI model.";
+  }
+
+  chatButton.addEventListener("click", function () {
+    toggleChat(chatWindow.style.display !== "flex");
+  });
+
+  closeButton.addEventListener("click", function () {
+    toggleChat(false);
+  });
+
+  chatForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const question = chatInput.value.trim();
+
+    if (!question) return;
+
+    addMessage(question, "user");
+    chatInput.value = "";
+
+    const reply = getReply(question);
+    addMessage(reply, "bot");
+  });
+})();
+</script>
 </body>
 </html>
