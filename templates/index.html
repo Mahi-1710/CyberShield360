@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield 360</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b1220;
+            color: white;
+        }
+
+        header {
+            padding: 22px 8%;
+            border-bottom: 1px solid #26334b;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        h1 {
+            font-size: 42px;
+            color: #67e8d3;
+        }
+
+        .hero p, .card p { color: #b5c1d5; line-height: 1.6; }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: #151f32;
+            border: 1px solid #2c3b54;
+            padding: 25px;
+            border-radius: 14px;
+        }
+
+        .icon { font-size: 32px; }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background: #0b1220;
+            border: 1px solid #465570;
+            color: white;
+            border-radius: 7px;
+        }
+
+        button {
+            background: #67e8d3;
+            color: #07131b;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 8px;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .result { overflow-wrap: anywhere; line-height: 1.6; }
+        .about { margin-top: 22px; }
+
+        @media (max-width: 650px) {
+            .cards { grid-template-columns: 1fr; }
+            h1 { font-size: 32px; }
+        }
+        
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 18px 0;
+}
+
+.stat {
+    background: #0b1220;
+    border: 1px solid #2c3b54;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.stat span {
+    color: #b5c1d5;
+    font-size: 13px;
+}
+
+.stat h3 {
+    color: #67e8d3;
+    font-size: 28px;
+    margin: 10px 0 0;
+}
+
+#recent-scans li {
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+}
+    </style>
+</head>
+
+<body>
+    <header>🛡️ CyberShield 360</header>
+
+    <main>
+        <section class="hero">
+            <h1>Your Digital Safety Assistant</h1>
+            <p>Detect suspicious links and protect your digital life.</p>
+            <p>Scan → Analyze → Understand the risk.</p>
+        </section>
+
+        <section class="cards">
+            <div class="card">
+                <div class="icon">🔗</div>
+                <h2>URL Scanner</h2>
+                <p>Check a website link for suspicious patterns.</p>
+
+                <form id="url-form">
+                    <label for="url">Website URL</label>
+                    <input id="url" type="text"
+                           placeholder="example.com" required>
+                    <button type="submit">Scan URL</button>
+                </form>
+
+                <div id="url-result" class="result" aria-live="polite"></div>
+            </div>
+
+           
+<div class="card">
+    <div class="icon">📩</div>
+    <h2>Scam Message Detector</h2>
+    <p>Check suspicious SMS, WhatsApp and email messages.</p>
+
+    <form id="message-form">
+        <label for="message">Paste your message</label>
+        <textarea id="message" rows="5"
+            placeholder="Paste a suspicious message here..."
+            required></textarea>
+        <button type="submit">Scan Message</button>
+    </form>
+
+    <div id="message-result" class="result" aria-live="polite"></div>
+</div>
+
+            
+<div class="card">
+    <div class="icon">🔐</div>
+    <h2>Login Security Analyzer</h2>
+    <p>Test login activity for suspicious signals.</p>
+
+    <form id="login-form">
+        <label for="failed-attempts">Failed login attempts</label>
+        <input
+            id="failed-attempts"
+            type="number"
+            min="0"
+            max="100"
+            value="0"
+            required
+        >
+
+        <p>
+            <label>
+                <input id="new-device" type="checkbox">
+                Login from an unknown device
+            </label>
+        </p>
+
+        <p>
+            <label>
+                <input id="unusual-location" type="checkbox">
+                Login from an unusual location
+            </label>
+        </p>
+
+        <button type="submit">Analyze Login</button>
+    </form>
+
+    <div id="login-result" class="result" aria-live="polite"></div>
+</div>
+
+           
+<div class="card">
+    <div class="icon">📊</div>
+    <h2>Cyber Risk Dashboard</h2>
+    <p>Summary of your scans in this browser session.</p>
+
+    <div class="dashboard-stats">
+        <div class="stat">
+            <span>Total scans</span>
+            <h3 id="total-scans">0</h3>
+        </div>
+
+        <div class="stat">
+            <span>High-risk results</span>
+            <h3 id="high-scans">0</h3>
+        </div>
+    </div>
+
+    <h3>Recent scan results</h3>
+    <ul id="recent-scans">
+        <li>No scans yet. Try one of the scanners above.</li>
+    </ul>
+
+    <button type="button" id="reset-dashboard">
+        Reset dashboard
+    </button>
+</div>
+
+        <section class="card about">
+            <h2>About CyberShield 360</h2>
+            <p>This is a hackathon prototype. Scanner results are preliminary
+               rule-based checks, not a guarantee that a link is safe.</p>
+        </section>
+    </main>
+
+    <script>
+        
+let totalScans = 0;
+let highScans = 0;
+
+function addDashboardResult(moduleName, data) {
+    totalScans++;
+
+    if (data.risk_level === "High") {
+        highScans++;
+    }
+
+    document.getElementById("total-scans").textContent = totalScans;
+    document.getElementById("high-scans").textContent = highScans;
+
+    const list = document.getElementById("recent-scans");
+
+    if (totalScans === 1) {
+        list.replaceChildren();
+    }
+
+    const item = document.createElement("li");
+    item.textContent =
+        `${moduleName}: ${data.risk_level} Risk (${data.risk_score}/100)`;
+
+    list.prepend(item);
+
+    // Keep only the five most recent results.
+    while (list.children.length > 5) {
+        list.lastElementChild.remove();
+    }
+}
+
+document.getElementById("reset-dashboard").addEventListener("click", function() {
+    totalScans = 0;
+    highScans = 0;
+
+    document.getElementById("total-scans").textContent = "0";
+    document.getElementById("high-scans").textContent = "0";
+
+    const list = document.getElementById("recent-scans");
+    list.replaceChildren();
+
+    const item = document.createElement("li");
+    item.textContent = "No scans yet. Try one of the scanners above.";
+    list.appendChild(item);
+});
+        document.getElementById("url-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const result = document.getElementById("url-result");
+            const url = document.getElementById("url").value.trim();
+
+            result.textContent = "Analyzing URL...";
+
+            try {
+                const response = await fetch("/api/scan-url", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ url: url })
+                });
+
+                const data = await response.json();
+                addDashboardResult("URL Scanner", data);
+
+                if (!response.ok) {
+                    throw new Error("Scan failed");
+                }
+
+                result.replaceChildren();
+
+                const heading = document.createElement("h3");
+                heading.textContent =
+                    `${data.risk_level} Risk — ${data.risk_score}/100`;
+                result.appendChild(heading);
+
+                const list = document.createElement("ul");
+
+                data.reasons.forEach(function(reason) {
+                    const item = document.createElement("li");
+                    item.textContent = reason;
+                    list.appendChild(item);
+                });
+
+                result.appendChild(list);
+
+                if (data.note) {
+                    const note = document.createElement("p");
+                    note.textContent = data.note;
+                    result.appendChild(note);
+                }
+            } catch (error) {
+                result.textContent =
+                    "Scan failed. Check that the Flask server is running.";
+            }
+        });
+        
+document.getElementById("message-form").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const result = document.getElementById("message-result");
+    const message = document.getElementById("message").value.trim();
+
+    result.textContent = "Analyzing message...";
+
+    try {
+        const response = await fetch("/api/scan-message", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({message: message})
+        });
+
+        const data = await response.json();
+        addDashboardResult("Message Scanner", data);
+        result.replaceChildren();
+
+        const heading = document.createElement("h3");
+        heading.textContent = `${data.risk_level} Risk — ${data.risk_score}/100`;
+        result.appendChild(heading);
+
+        const list = document.createElement("ul");
+
+        data.reasons.forEach(function(reason) {
+            const item = document.createElement("li");
+            item.textContent = reason;
+            list.appendChild(item);
+        });
+
+        result.appendChild(list);
+
+        const note = document.createElement("p");
+        note.textContent = data.note || "";
+        result.appendChild(note);
+
+    } catch (error) {
+        result.textContent = "Scan failed. Please check the server.";
+    }
+});
+
+document.getElementById("login-form").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const result = document.getElementById("login-result");
+
+    const payload = {
+        failed_attempts: Number(
+            document.getElementById("failed-attempts").value
+        ),
+        new_device: document.getElementById("new-device").checked,
+        unusual_location: document.getElementById("unusual-location").checked
+    };
+
+    result.textContent = "Analyzing login activity...";
+
+    try {
+        const response = await fetch("/api/analyze-login", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        addDashboardResult("Login Security", data);
+
+        if (!response.ok) {
+            throw new Error("Analysis failed");
+        }
+
+        result.replaceChildren();
+
+        const heading = document.createElement("h3");
+        heading.textContent =
+            `${data.risk_level} Risk — ${data.risk_score}/100`;
+        result.appendChild(heading);
+
+        const list = document.createElement("ul");
+
+        data.reasons.forEach(function(reason) {
+            const item = document.createElement("li");
+            item.textContent = reason;
+            list.appendChild(item);
+        });
+
+        result.appendChild(list);
+
+        const recommendation = document.createElement("p");
+        recommendation.textContent =
+            "Recommendation: " + data.recommendation;
+        result.appendChild(recommendation);
+
+        const note = document.createElement("p");
+        note.textContent = data.note;
+        result.appendChild(note);
+
+    } catch (error) {
+        result.textContent =
+            "Analysis failed. Check the Flask server and try again.";
+    }
+});
+    </script>
+</body>
+</html>
