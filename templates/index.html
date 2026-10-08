@@ -301,6 +301,76 @@ button:disabled { opacity: .65; cursor: wait; }
   font-size: 13px;
   overflow-wrap: anywhere;
 }
+/* Cyber Risk Score */
+
+.cyber-risk-panel {
+  margin: 18px 0;
+  padding: 18px;
+  border-radius: 14px;
+  background: #0b1321;
+  border: 1px solid var(--border);
+}
+
+.cyber-risk-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #dce8f7;
+  font-size: 15px;
+}
+
+.overall-risk-score {
+  margin-top: 12px;
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--cyan);
+}
+
+.overall-risk-level {
+  margin-top: 3px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.risk-components {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.risk-components div {
+  padding: 10px;
+  border-radius: 9px;
+  background: #111c2d;
+  border: 1px solid var(--border);
+}
+
+.risk-components span {
+  display: block;
+  font-size: 11px;
+  color: #8291a8;
+}
+
+.risk-components strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 18px;
+  color: #e7f0fb;
+}
+
+.cyber-risk-warning {
+  margin-top: 15px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #d5deed;
+}
+
+.risk-note {
+  margin-top: 12px;
+  font-size: 11px;
+  color: #71819b;
+}
 .secondary {
   background: #1a273b;
   border: 1px solid #34435b;
@@ -332,6 +402,50 @@ button:disabled { opacity: .65; cursor: wait; }
   .tools-grid { grid-template-columns: 1fr; }
   .section-head { align-items: flex-start; }
 }
+.safety-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.safety-tip {
+  padding: 16px;
+  border-radius: 12px;
+  background: #111c2d;
+  border: 1px solid var(--border);
+}
+
+.safety-tip:hover {
+  transform: translateY(-3px);
+  border-color: var(--cyan);
+}
+
+.safety-tip h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #e7f0fb;
+}
+
+.safety-tip p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #8fa0b8;
+}
+
+@media (max-width: 900px) {
+  .safety-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .safety-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 </head>
 
@@ -349,6 +463,8 @@ button:disabled { opacity: .65; cursor: wait; }
     <a class="nav-link" href="#message-scanner">✉ &nbsp; Scam Detector</a>
     <a class="nav-link" href="#login-analyzer">♙ &nbsp; Login Security</a>
     <a class="nav-link" href="#risk-dashboard">▥ &nbsp; Risk Dashboard</a>
+    <a href="#password-security">Password Security</a>
+    <a href="#cyber-safety">Cyber Safety Center</a>
 
     <div class="nav-label">INFORMATION</div>
     <a class="nav-link" href="#about">ⓘ &nbsp; About Project</a>
@@ -469,19 +585,91 @@ button:disabled { opacity: .65; cursor: wait; }
           </form>
           <div id="login-result" class="result" aria-live="polite"></div>
         </article>
+        <article class="card" id="password-security">
+  <div class="card-head">
+    <div class="tool-icon purple">🔐</div>
+    <div>
+      <h2>Password Security Checker</h2>
+      <p>Check basic password strength and security signals.</p>
+    </div>
+  </div>
+
+  <form id="password-form">
+    <input
+      id="password-input"
+      type="password"
+      placeholder="Enter a password to check"
+      maxlength="100"
+      required
+    >
+
+    <button class="primary" type="submit">
+      Check Password →
+    </button>
+  </form>
+
+  <div id="password-result" class="result" aria-live="polite"></div>
+</article>
 
         <article class="card" id="risk-dashboard">
+          <!-- Password Security Checker -->
+
           <div class="card-head">
             <div class="tool-icon cyan">▥</div>
             <div>
-              <h2>Risk activity</h2>
+             <h2>Scan History</h2>
               <p>Your five most recent scan results.</p>
             </div>
-          </div>
+          </div><!-- Unified Cyber Risk Score -->
+<div class="cyber-risk-panel">
+
+    <div class="cyber-risk-title">
+        🛡️ <strong>Cyber Risk Score</strong>
+    </div>
+
+    <div id="overall-risk-score" class="overall-risk-score">
+        0/100
+    </div>
+
+    <div id="overall-risk-level" class="overall-risk-level">
+        Awaiting analysis
+    </div>
+
+    <div class="risk-components">
+
+        <div>
+            <span>URL Risk</span>
+            <strong id="url-risk-score">0</strong>
+        </div>
+
+        <div>
+            <span>Message Risk</span>
+            <strong id="message-risk-score">0</strong>
+        </div>
+
+        <div>
+            <span>Login Risk</span>
+            <strong id="login-risk-score">0</strong>
+        </div>
+
+    </div>
+
+    <div id="cyber-risk-warning" class="cyber-risk-warning">
+        Analyze a URL, message or login activity to calculate your overall risk.
+    </div>
+
+    <p class="risk-note">
+        Composite demo score based on the three CyberShield 360 security modules.
+    </p>
+
+</div>
           <ul id="recent-scans" class="scan-list">
             <li>No scans yet. Try one of the security tools.</li>
           </ul>
           <button type="button" class="secondary" id="reset-dashboard">Reset session dashboard</button>
+          <button type="button" class="primary" id="generate-report">
+  Generate Security Report
+</button>
         </article>
       </section>
 
@@ -499,6 +687,50 @@ button:disabled { opacity: .65; cursor: wait; }
       <footer class="footer">
         CyberShield 360 · Digital Safety & Cybersecurity
       </footer>
+      <!-- Cyber Safety Center -->
+<section class="card" id="cyber-safety">
+  <div class="card-head">
+    <div class="tool-icon cyan">🛡️</div>
+    <div>
+      <h2>Cyber Safety Center</h2>
+      <p>Quick security practices for everyday digital safety.</p>
+    </div>
+  </div>
+
+  <div class="safety-grid">
+
+    <div class="safety-tip">
+      <h3>🔐 Password Safety</h3>
+      <p>Use long and unique passwords. Avoid using the same password on multiple accounts.</p>
+    </div>
+
+    <div class="safety-tip">
+      <h3>🎣 Phishing Protection</h3>
+      <p>Do not click suspicious links. Verify the sender and website before entering sensitive information.</p>
+    </div>
+
+    <div class="safety-tip">
+      <h3>📱 OTP & UPI Safety</h3>
+      <p>Never share OTP, PIN, CVV or UPI PIN with anyone, even if they claim to be from a bank.</p>
+    </div>
+
+    <div class="safety-tip">
+      <h3>🌐 Safe Browsing</h3>
+      <p>Prefer HTTPS websites and carefully check the domain name before logging in.</p>
+    </div>
+
+    <div class="safety-tip">
+      <h3>💻 Device Security</h3>
+      <p>Keep your operating system, browser and security software updated.</p>
+    </div>
+
+    <div class="safety-tip">
+      <h3>🚨 After a Scam</h3>
+      <p>Secure affected accounts immediately, change passwords and contact the relevant official service.</p>
+    </div>
+
+  </div>
+</section>
     </main>
   </div>
 </div>
@@ -506,24 +738,169 @@ button:disabled { opacity: .65; cursor: wait; }
 <script>
 let totalScans = 0;
 let highScans = 0;
+// Unified Cyber Risk Score
+
+let latestRiskScores = {
+  url: 0,
+  message: 0,
+  login: 0
+};
+// Security Report Generator
+
+function generateSecurityReport() {
+  const report = `
+CYBERSHIELD 360 — SECURITY REPORT
+================================
+
+Overall Cyber Risk:
+${document.getElementById("overall-risk-score").textContent}
+
+Risk Level:
+${document.getElementById("overall-risk-level").textContent}
+
+Component Scores:
+URL Risk: ${document.getElementById("url-risk-score").textContent}/100
+Message Risk: ${document.getElementById("message-risk-score").textContent}/100
+Login Risk: ${document.getElementById("login-risk-score").textContent}/100
+
+Assessment:
+${document.getElementById("cyber-risk-warning").textContent}
+
+Generated:
+${new Date().toLocaleString()}
+
+Note:
+This is a demo security assessment and is not a certified security rating.
+`;
+
+  const blob = new Blob([report], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "CyberShield360_Security_Report.txt";
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
+
+
+
+async function updateCyberRiskScore() {
+  try {
+    const data = await postJSON("/api/cyber-risk", {
+      url_score: latestRiskScores.url,
+      message_score: latestRiskScores.message,
+      login_score: latestRiskScores.login
+    });
+
+    document.getElementById("overall-risk-score").textContent =
+      `${data.overall_score}/100`;
+
+    document.getElementById("overall-risk-level").textContent =
+      `${data.risk_level} Risk`;
+
+    document.getElementById("url-risk-score").textContent =
+      latestRiskScores.url;
+
+    document.getElementById("message-risk-score").textContent =
+      latestRiskScores.message;
+
+    document.getElementById("login-risk-score").textContent =
+      latestRiskScores.login;
+
+    document.getElementById("cyber-risk-warning").textContent =
+      data.risks.join(" ");
+
+  } catch (error) {
+    document.getElementById("cyber-risk-warning").textContent =
+      "Unable to calculate the combined cyber risk score.";
+  }
+}
+// Store latest scan information for the Cybersecurity Assistant
+let latestScanInfo = {
+  module: "",
+  riskLevel: "",
+  riskScore: 0,
+  reasons: []
+};
+
+    
 
 function addDashboardResult(moduleName, data) {
   totalScans++;
-  if (data.risk_level === "High") highScans++;
+
+  if (data.risk_level === "High") {
+    highScans++;
+  }
 
   document.getElementById("total-scans").textContent = totalScans;
   document.getElementById("high-scans").textContent = highScans;
 
   const list = document.getElementById("recent-scans");
-  if (totalScans === 1) list.replaceChildren();
 
-  const item = document.createElement("li");
-  item.textContent =
-    `${moduleName}: ${data.risk_level} Risk (${data.risk_score}/100)`;
-  list.prepend(item);
+  const scanTime = new Date().toLocaleString();
 
-  while (list.children.length > 5) list.lastElementChild.remove();
+  const historyItem =
+    `${moduleName} • ${data.risk_level} Risk • Score: ${data.risk_score}/100 • ${scanTime}`;
+
+  // Save scan history in browser
+  let history = JSON.parse(
+    localStorage.getItem("cybershield_history") || "[]"
+  );
+
+  history.unshift(historyItem);
+
+  // Keep only latest 5 scans
+  history = history.slice(0, 5);
+
+  localStorage.setItem(
+    "cybershield_history",
+    JSON.stringify(history)
+  );
+
+  // Display history
+  list.replaceChildren();
+
+  history.forEach(entry => {
+    const item = document.createElement("li");
+    item.textContent = entry;
+    list.appendChild(item);
+  });
 }
+function loadScanHistory() {
+  const history = JSON.parse(
+    localStorage.getItem("cybershield_history") || "[]"
+  );
+
+  const list = document.getElementById("recent-scans");
+
+  list.replaceChildren();
+
+  if (history.length === 0) {
+    const item = document.createElement("li");
+    item.textContent = "No scans yet. Try one of the security tools.";
+    list.appendChild(item);
+    return;
+  }
+
+  history.forEach(entry => {
+    const item = document.createElement("li");
+    item.textContent = entry;
+    list.appendChild(item);
+  });
+
+  totalScans = history.length;
+
+  highScans = history.filter(entry =>
+    entry.includes("High Risk")
+  ).length;
+
+  document.getElementById("total-scans").textContent = totalScans;
+  document.getElementById("high-scans").textContent = highScans;
+}
+
+loadScanHistory();
 
 function showResult(container, data, extraText) {
   container.replaceChildren();
@@ -561,6 +938,51 @@ async function postJSON(url, payload) {
   }
   return data;
 }
+// Password Security Checker
+
+document.getElementById("password-form").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const password = document.getElementById("password-input").value;
+  const result = document.getElementById("password-result");
+
+  let score = 0;
+  const reasons = [];
+
+  if (password.length >= 8) score += 20;
+  else reasons.push("Use at least 8 characters.");
+
+  if (password.length >= 12) score += 20;
+
+  if (/[A-Z]/.test(password)) score += 15;
+  else reasons.push("Add an uppercase letter.");
+
+  if (/[a-z]/.test(password)) score += 15;
+  else reasons.push("Add a lowercase letter.");
+
+  if (/[0-9]/.test(password)) score += 15;
+  else reasons.push("Add a number.");
+
+  if (/[^A-Za-z0-9]/.test(password)) score += 15;
+  else reasons.push("Add a special character.");
+
+  let strength;
+
+  if (score >= 80) {
+    strength = "Strong";
+  } else if (score >= 50) {
+    strength = "Medium";
+  } else {
+    strength = "Weak";
+  }
+
+  result.innerHTML = `
+    <h3>${strength} Password — ${score}/100</h3>
+    <ul>
+      ${reasons.map(reason => `<li>${reason}</li>`).join("")}
+    </ul>
+  `;
+});
 
 function setLoading(form, loading, label) {
   const button = form.querySelector('button[type="submit"]');
@@ -572,16 +994,28 @@ function setLoading(form, loading, label) {
 }
 
 document.getElementById("reset-dashboard").addEventListener("click", () => {
+  localStorage.removeItem("cybershield_history");
+
   totalScans = 0;
   highScans = 0;
+
   document.getElementById("total-scans").textContent = "0";
   document.getElementById("high-scans").textContent = "0";
 
   const list = document.getElementById("recent-scans");
+
   list.replaceChildren();
+
   const item = document.createElement("li");
+
   item.textContent = "No scans yet. Try one of the security tools.";
+
   list.appendChild(item);
+
+});
+
+document.getElementById("generate-report").addEventListener("click", () => {
+  generateSecurityReport();
 });
 
 document.getElementById("url-form").addEventListener("submit", async event => {
@@ -595,7 +1029,17 @@ document.getElementById("url-form").addEventListener("submit", async event => {
 
   try {
     const data = await postJSON("/api/scan-url", { url });
-    addDashboardResult("URL Scanner", data);
+
+latestRiskScores.url = data.risk_score;
+latestScanInfo = {
+  module: "URL Scanner",
+  riskLevel: data.risk_level,
+  riskScore: data.risk_score,
+  reasons: data.reasons || []
+};
+updateCyberRiskScore();
+
+addDashboardResult("URL Scanner", data);
     showResult(result, data);
   } catch (error) {
     result.textContent = "Scan failed: " + error.message;
@@ -614,9 +1058,20 @@ document.getElementById("message-form").addEventListener("submit", async event =
   setLoading(form, true);
 
   try {
-    const data = await postJSON("/api/scan-message", { message });
-    addDashboardResult("Message Scanner", data);
-    showResult(result, data);
+const data = await postJSON("/api/scan-message", { message });
+
+latestRiskScores.message = data.risk_score;
+latestScanInfo = {
+  module: "Message Scanner",
+  riskLevel: data.risk_level,
+  riskScore: data.risk_score,
+  reasons: data.reasons || []
+};
+updateCyberRiskScore();
+
+addDashboardResult("Message Scanner", data);
+showResult(result, data);
+   
   } catch (error) {
     result.textContent = "Scan failed: " + error.message;
   } finally {
@@ -640,6 +1095,14 @@ document.getElementById("login-form").addEventListener("submit", async event => 
 
   try {
     const data = await postJSON("/api/analyze-login", payload);
+    latestRiskScores.login = data.risk_score;
+    latestScanInfo = {
+  module: "Login Security Analyzer",
+  riskLevel: data.risk_level,
+  riskScore: data.risk_score,
+  reasons: data.reasons || []
+};
+updateCyberRiskScore();
     addDashboardResult("Login Security", data);
     showResult(result, data, data.recommendation || data.note);
   } catch (error) {
@@ -861,6 +1324,25 @@ document.querySelectorAll(".nav-link").forEach(link => {
 
   function getReply(question) {
     const q = question.toLowerCase();
+    // Give advice based on the latest scan result
+// Answer questions about the latest scan only when the user asks about it
+if (
+  /\b(latest scan|last scan|scan result|scan score|risk score|risk level|is it safe|is this safe|what did the scan|scan analysis)\b/.test(q)
+) {
+  if (!latestScanInfo.module) {
+    return "No scan has been performed yet. Please use the URL Scanner, Scam Message Detector, or Login Security Analyzer first.";
+  }
+
+  if (latestScanInfo.riskLevel === "High") {
+    return `⚠️ Your latest ${latestScanInfo.module} result is HIGH RISK (${latestScanInfo.riskScore}/100). ${latestScanInfo.reasons.join(" ")} Do not share passwords, OTPs, or sensitive information.`;
+  }
+
+  if (latestScanInfo.riskLevel === "Medium") {
+    return `⚠️ Your latest ${latestScanInfo.module} result is MEDIUM RISK (${latestScanInfo.riskScore}/100). ${latestScanInfo.reasons.join(" ")} Please verify the source before taking any action.`;
+  }
+
+  return `✅ Your latest ${latestScanInfo.module} result is LOW RISK (${latestScanInfo.riskScore}/100). No major warning signals were detected by the current demo analysis.`;
+}
 
     if (/\b(otp|one time password|verification code)\b/.test(q)) {
       return "Never share your OTP or verification code with anyone, including callers claiming to be from a bank. If you already shared it, contact your bank through its official app or number immediately and secure your account.";
